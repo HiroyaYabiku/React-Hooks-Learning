@@ -1,29 +1,47 @@
-import React from 'react'
+import React, { useState, useReducer } from 'react'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import reducer from '../reducers'
+
 const App = () => {
+  const [state, dispatch] = useReducer(reducer, [])
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+
+  const addEvent = e => {
+    e.preventDefault()
+    dispatch({
+      type: 'CREATE_EVENT',
+      title,
+      body,
+    })
+
+    setTitle('')
+    setBody('')
+  }
+
   return (
     <div className="container-fluid">
       <h4>イベント作成フォーム</h4>
-      <from>
+      <form>
         <div className="form-group">
           <label htmlFor="formEventTitle">タイトル</label>
-          <input className="form-control" id="formEventTitle" />
+          <input value={title} className="form-control" id="formEventTitle" onChange={e => setTitle(e.target.value)} />
         </div>
 
         <div className="form-group">
           <label htmlFor="formEventBody">ボディー</label>
-          <textarea className="form-control" id="formEventBody" />
+          <textarea value={body} className="form-control" id="formEventBody" onChange={e => setBody(e.target.value)} />
         </div>
 
-        <button className="btn btn-primary">イベントを作成する</button>
+        <button className="btn btn-primary" onClick={addEvent}>イベントを作成する</button>
         <button className="btn btn-danger">全てのイベントを削除する</button>
 
-      </from>
+      </form>
 
       <h4>イベント一覧</h4>
-      <table class="table table-hover">
+      <table className="table table-hover">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -34,10 +52,6 @@ const App = () => {
         </thead>
         <tbody>
           <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
           </tr>
         </tbody>
       </table>
